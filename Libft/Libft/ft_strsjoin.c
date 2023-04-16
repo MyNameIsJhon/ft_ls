@@ -42,7 +42,7 @@ char *ft_strsjoin(int count, ...)
     t_list **alst;
     int i = 0;
 
-    size_t size;
+    size_t size = 0;
 
     char *str;
 

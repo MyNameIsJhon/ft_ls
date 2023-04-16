@@ -89,7 +89,7 @@ void *ft_ls(char *path, ls_files **pt_files)
 int main(int argc, char **argv)
 {
     char *papa;
-    papa = ft_strsjoin(3, "papaoutai", "papanesaispas", "jaque");
+    papa = ft_strsjoin(4, "papaoutai", "papanesaispas", "jaque");
 
     ft_putstr(papa);
 
