@@ -13,8 +13,8 @@ size_t ft_list_strstrlen(t_list **alst)
 
     while(lst != NULL)
     {
-        lst = lst->next;
         count += ft_strlen((char*)(lst->content));
+        lst = lst->next;
     }
 
     return count;
@@ -40,7 +40,7 @@ char *ft_strsjoin(int count, ...)
     va_list ap;
     t_list *lst;
     t_list **alst;
-    int i = 0;
+    int i = 1;
 
     size_t size = 0;
 
@@ -58,7 +58,7 @@ char *ft_strsjoin(int count, ...)
 
     size = ft_list_strstrlen(alst);
 
-    if(!(str = (char*) malloc(sizeof(char) * size)))
+    if(!(str = (char*) malloc((sizeof(char) * size) + 1)))
         return NULL;
     str = ft_listtostr(alst, str);
 

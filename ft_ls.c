@@ -88,11 +88,16 @@ void *ft_ls(char *path, ls_files **pt_files)
 
 int main(int argc, char **argv)
 {
-    char *papa;
-    papa = ft_strsjoin(4, "papaoutai", "papanesaispas", "jaque");
+    t_list *lst = NULL;
+    t_list **alst = &lst;
 
-    ft_putstr(papa);
+    // papa = ft_strsjoin(2, "papaoutai", "papanesaispas", "jaque");
 
+    char* str = ft_strsjoin(3, "sasa", "mama", "lolo");
+
+    ft_printf("%s \n", str);
+
+    free(str);
 
     return 0;
 }
