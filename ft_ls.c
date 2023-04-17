@@ -1,5 +1,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
+#include <stdio.h>
+#include <pwd.h>
 #include "libft.h"
 #include "list.h"
 #include "ls_list.h"
@@ -22,8 +24,8 @@
 
 void *ft_ls(char *path, int opt)
 {
-    DIR *dir;
-    struct dirent *entry;
+    DIR *dir = NULL;
+    struct dirent *entry = NULL;
 
     ls_files *files = NULL;
     ls_files **pt_files = &files;
@@ -32,10 +34,11 @@ void *ft_ls(char *path, int opt)
     char *path_stat;
 
     char c = '/';
+    
 
     int i = 0;
 
-    if(!(dir = opendir(path)))
+    if((dir = opendir(path)) == NULL)
         return NULL;
     if((entry = readdir(dir)) != NULL)
     {
@@ -43,7 +46,7 @@ void *ft_ls(char *path, int opt)
         if(stat(path_stat, &file_stat))
             files = ls_new(&file_stat, entry, path_stat);//possibilitée d'ajout dans la structure
         else
-            return NULL;
+            files = ls_new(NULL, entry, path_stat);
         free(path_stat);
     }
     else
@@ -56,6 +59,7 @@ void *ft_ls(char *path, int opt)
         else
             return NULL;
         free(path_stat);
+
     }
 
 
@@ -68,6 +72,8 @@ void *ft_ls(char *path, int opt)
         files = files->next;
     }
 
+
+
     free(path);
     ls_free(pt_files);
 
@@ -75,14 +81,18 @@ void *ft_ls(char *path, int opt)
 
 int main(int argc, char **argv)
 {
+
+    /*
     t_list *lst = NULL;
     t_list **alst = &lst;
     char *path;
 
-    path = ft_strdup("./");
+    path = ft_strdup("../ft_ls");
 
     ft_ls(path, 1);
 
 
-    return 0;
+    return 1;
+
+    */
 }

@@ -84,7 +84,8 @@ void ft_lstclear(t_list **alst)
     {
         tmp = curr;
         curr = curr->next;
-        free(tmp);
+        if(tmp != NULL)
+            free(tmp);
         tmp = curr;
     }
 }
@@ -103,7 +104,8 @@ void ft_lstclearall(t_list **alst, void (*f)(void*))
         tmp = curr;
         f(curr->content);
         curr = curr->next;
-        free(tmp);
+        if(tmp != NULL)
+            free(tmp);
         tmp = curr;
     }
 }
