@@ -27,14 +27,20 @@ void *ft_ls(char *path, int opt)
     struct stat file_stat;
     char *path_stat;
 
+    char c = '/';
+
     int i = 0;
 
     if(!(dir = opendir(path)))
         return NULL;
     if((entry = readdir(dir)) != NULL)
     {
-        if()
-        files = ls_new(&file_stat, entry);
+        path_stat = strsjoin(3, path, &c, entry->d_name);
+        if(stat(path_stat, &file_stat))
+            files = ls_new(&file_stat, entry);
+        else
+            return NULL;
+        free(path_stat);
     }
     else
         return NULL;
