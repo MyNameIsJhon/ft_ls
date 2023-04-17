@@ -4,7 +4,7 @@
 #include "list.h"
 #include "ls_list.h"
 
-ls_files *ls_new(struct stat *file_stat, struct dirent *entry)
+ls_files *ls_new(struct stat *file_stat, struct dirent *entry, char *pathfile)
 {
     ls_files *file;
 
@@ -15,7 +15,7 @@ ls_files *ls_new(struct stat *file_stat, struct dirent *entry)
 
     file->entry = entry;
     file->file_stat = file_stat;
-
+    file->path = ft_strdup(pathfile);
     file->next = NULL;
     
     return file;

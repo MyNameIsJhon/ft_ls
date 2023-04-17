@@ -35,19 +35,25 @@ void *ft_ls(char *path, int opt)
         return NULL;
     if((entry = readdir(dir)) != NULL)
     {
-        path_stat = strsjoin(3, path, &c, entry->d_name);
+        path_stat = ft_strsjoin(3, path, &c, entry->d_name);
         if(stat(path_stat, &file_stat))
-            files = ls_new(&file_stat, entry);
+            files = ls_new(&file_stat, entry, path_stat);
         else
             return NULL;
         free(path_stat);
     }
     else
         return NULL;
-    while((entry = readdir(dir)) != NULL &&  )
+    while((entry = readdir(dir)) != NULL)
     {
-        ls_add_back(pt_files, ls_new(&file_stat, entry));
+        path_stat = ft_strsjoin(3, path, &c, entry->d_name);
+        if(stat(path_stat, &file_stat))
+            ls_add_back(pt_files, ls_new(&file_stat, entry, path_stat));
+        else
+            return NULL;
+        free(path_stat);
     }
+    
 
 }
 
@@ -56,13 +62,8 @@ int main(int argc, char **argv)
     t_list *lst = NULL;
     t_list **alst = &lst;
 
+    ft_ls("./", 1);
 
-
-    char* str = ft_strsjoin(3, "sasa", "mama", "lolo");
-
-    ft_printf("%s \n", str);
-
-    free(str);
 
     return 0;
 }
