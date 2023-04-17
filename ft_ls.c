@@ -18,6 +18,8 @@
 
 \********************************************************************/
 
+
+
 void *ft_ls(char *path, int opt)
 {
     DIR *dir;
@@ -59,7 +61,7 @@ void *ft_ls(char *path, int opt)
 
     //affichage
 
-    while(files != NULL)
+    while(files != NULL) // en cas d'instruction récursive
     {
         if(files->entry->d_type == DT_DIR)
             ft_ls(files->path, 1);
