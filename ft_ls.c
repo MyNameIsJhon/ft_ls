@@ -16,14 +16,41 @@
 
 \********************************************************************/
 
+void *ft_ls(char *path, int opt)
+{
+    DIR *dir;
+    struct dirent *entry;
 
+    ls_files *files = NULL;
+    ls_files **pt_files = &files;
+
+    struct stat file_stat;
+    char *path_stat;
+
+    int i = 0;
+
+    if(!(dir = opendir(path)))
+        return NULL;
+    if((entry = readdir(dir)) != NULL)
+    {
+        if()
+        files = ls_new(&file_stat, entry);
+    }
+    else
+        return NULL;
+    while((entry = readdir(dir)) != NULL &&  )
+    {
+        ls_add_back(pt_files, ls_new(&file_stat, entry));
+    }
+
+}
 
 int main(int argc, char **argv)
 {
     t_list *lst = NULL;
     t_list **alst = &lst;
 
-    // papa = ft_strsjoin(2, "papaoutai", "papanesaispas", "jaque");
+
 
     char* str = ft_strsjoin(3, "sasa", "mama", "lolo");
 
