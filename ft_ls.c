@@ -59,9 +59,9 @@ void *ft_ls(char *path, int opt)
     }
 
 
-    //affichage
+    ls_read(pt_files, "opts");//il faut changer les options
 
-    while(files != NULL) // en cas d'instruction récursive
+    while(files != NULL) // en cas d'instruction récursive uniquement
     {
         if(files->entry->d_type == DT_DIR)
             ft_ls(files->path, 1);

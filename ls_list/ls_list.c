@@ -42,6 +42,17 @@ void ls_add_back(ls_files **pt_files, ls_files *file)
     curs->next = file;
 }
 
+void ls_read(ls_files **pt_files, char *opts)
+{
+    ls_files *file = *pt_files;
+
+    while(file != NULL)
+    {
+        ft_printf("%s  ", file->entry->d_name);
+        file = file->next;
+    }
+}
+
 void ls_free(ls_files **pt_files)
 {
     ls_files *file = NULL;
