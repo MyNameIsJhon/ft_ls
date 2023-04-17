@@ -4,6 +4,8 @@
 #include "list.h"
 #include "ls_list.h"
 
+
+
 /*******************************************************************\
                             PETITE FICHE TRICHE FLAGS 
 
@@ -37,7 +39,7 @@ void *ft_ls(char *path, int opt)
     {
         path_stat = ft_strsjoin(3, path, &c, entry->d_name);
         if(stat(path_stat, &file_stat))
-            files = ls_new(&file_stat, entry, path_stat);
+            files = ls_new(&file_stat, entry, path_stat);//possibilitée d'ajout dans la structure
         else
             return NULL;
         free(path_stat);
@@ -48,12 +50,23 @@ void *ft_ls(char *path, int opt)
     {
         path_stat = ft_strsjoin(3, path, &c, entry->d_name);
         if(stat(path_stat, &file_stat))
-            ls_add_back(pt_files, ls_new(&file_stat, entry, path_stat));
+            ls_add_back(pt_files, ls_new(&file_stat, entry, path_stat)); //possibilitée d'ajout dans la structure
         else
             return NULL;
         free(path_stat);
     }
-    
+
+
+    //moment affichage (plus tard)
+
+    while(files != NULL)
+    {
+        if(files->entry->d_type == DT_DIR)
+            ft_ls(files->path, 1);
+        files = files->next;
+    }
+
+    free(path);
 
 }
 
@@ -61,6 +74,7 @@ int main(int argc, char **argv)
 {
     t_list *lst = NULL;
     t_list **alst = &lst;
+
 
     ft_ls("./", 1);
 
