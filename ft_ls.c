@@ -57,7 +57,7 @@ void *ft_ls(char *path, int opt)
     }
 
 
-    //moment affichage (plus tard)
+    //affichage
 
     while(files != NULL)
     {
@@ -67,6 +67,7 @@ void *ft_ls(char *path, int opt)
     }
 
     free(path);
+    ls_free(pt_files);
 
 }
 
@@ -74,9 +75,11 @@ int main(int argc, char **argv)
 {
     t_list *lst = NULL;
     t_list **alst = &lst;
+    char *path;
 
+    path = ft_strdup("./");
 
-    ft_ls("./", 1);
+    ft_ls(path, 1);
 
 
     return 0;
