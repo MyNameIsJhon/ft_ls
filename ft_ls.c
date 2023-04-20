@@ -8,7 +8,7 @@
 
 
 
-/*******************************************************************\
+/*****************************************************************************************\
                             PETITE FICHE TRICHE FLAGS 
 
     -l = use a long listing format
@@ -18,7 +18,13 @@
     -t = sort by timeq
 
 
-\********************************************************************/
+    Programme devant êtres refait, à première vue les affecter les structures 
+    Entry ainsi que stat directement à ma structure personnalisé causerait des 
+    erreurs de mémoire. d'un autre point de vue cela affectera aussi les permorances
+    car trop d'informations prise en compte pour les besoins du programme.
+
+
+\****************************************************************************************/
 
 
 
@@ -52,7 +58,6 @@ void *ft_ls(char *path, int opt)
         else
             files = ls_new(NULL, entry, path_stat);
         free(path_stat);
-        ft_putstr((char*) files->entry->d_name);
     }
     else
         return NULL;
@@ -67,8 +72,7 @@ void *ft_ls(char *path, int opt)
         else
             return NULL;
         free(path_stat);
-        if (files->entry != NULL)
-            ft_putstr((char*) files->entry->d_name);
+        
     }
 
 
