@@ -26,19 +26,21 @@ ls_files *ls_last(ls_files **pt_files)
     ls_files *file = *pt_files;
 
     while(file->next != NULL)
+    {
+        ft_printf("%s \n", (char*) file->entry->d_name);//verification (ne passe pas par ici)
         file = file->next;
+    }
     return file;
 }
 
 void ls_add_back(ls_files **pt_files, ls_files *file)
 {
-    ls_files *curs = ls_last(pt_files);
+    ls_files *curs = NULL;
 
-    if(*pt_files == NULL)
-    {
-        *pt_files = file;
+    if(!(*pt_files) || !file)
         return;
-    }
+    curs = ls_last(pt_files);
+
     curs->next = file;
 }
 

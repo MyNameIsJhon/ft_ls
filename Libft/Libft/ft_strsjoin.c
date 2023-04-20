@@ -51,9 +51,10 @@ char *ft_strsjoin(int count, ...)
     lst = ft_lstnew(ft_strdup(va_arg(ap, char*)));
     alst = &lst;
 
-    while(i++ < count)
+    while(i < count)
     {
         ft_lstadd_back(alst, ft_lstnew(ft_strdup(va_arg(ap, char*))));
+        i++;
     }
 
     size = ft_list_strstrlen(alst);

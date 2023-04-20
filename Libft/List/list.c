@@ -94,7 +94,9 @@ void ft_lstclearall(t_list **alst, void (*f)(void*))
     t_list *curr;
     t_list *tmp;
 
-    if(!alst)
+    int i = 0;
+
+    if(!alst || !f)
         return;
     
     curr = *alst;
@@ -104,10 +106,10 @@ void ft_lstclearall(t_list **alst, void (*f)(void*))
         tmp = curr;
         f(curr->content);
         curr = curr->next;
-        if(tmp != NULL)
-            free(tmp);
-        tmp = curr;
+        free(tmp);
+        i++;
     }
+    *alst = NULL;
 }
 
 void ft_lstiter(t_list *lst, void (*f)(void*))

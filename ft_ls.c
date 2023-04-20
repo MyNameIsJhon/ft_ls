@@ -33,39 +33,50 @@ void *ft_ls(char *path, int opt)
     struct stat file_stat;
     char *path_stat;
 
-    char c = '/';
+    char *c = "/\0";
     
 
     int i = 0;
 
     if((dir = opendir(path)) == NULL)
         return NULL;
+    back_no_recur:
     if((entry = readdir(dir)) != NULL)
     {
-        path_stat = ft_strsjoin(3, path, &c, entry->d_name);
+        if (ft_strequ(entry->d_name, ".") || ft_strequ(entry->d_name, ".."))
+            goto back_no_recur;
+
+        path_stat = ft_strsjoin(3, path, c, entry->d_name);
         if(stat(path_stat, &file_stat))
             files = ls_new(&file_stat, entry, path_stat);//possibilitée d'ajout dans la structure
         else
             files = ls_new(NULL, entry, path_stat);
         free(path_stat);
+        ft_putstr((char*) files->entry->d_name);
     }
     else
         return NULL;
-    while((entry = readdir(dir)) != NULL)
+    while ((entry = readdir(dir)) != NULL)
     {
-        path_stat = ft_strsjoin(3, path, &c, entry->d_name);
-        if(stat(path_stat, &file_stat))
-            ls_add_back(pt_files, ls_new(&file_stat, entry, path_stat)); //possibilitée d'ajout dans la structure
+        if (ft_strequ(entry->d_name, ".") || ft_strequ(entry->d_name, ".."))
+            continue;
+
+        path_stat = ft_strsjoin(3, path, c, entry->d_name);
+        if (stat(path_stat, &file_stat))
+            ls_add_back(pt_files, ls_new(&file_stat, entry, path_stat));
         else
             return NULL;
         free(path_stat);
-
+        if (files->entry != NULL)
+            ft_putstr((char*) files->entry->d_name);
     }
 
 
-    ls_read(pt_files, "opts");//il faut changer les options
 
-    while(files != NULL) // en cas d'instruction récursive uniquement
+
+    ls_read(pt_files, "opts");
+
+    while(files != NULL) 
     {
         if(files->entry->d_type == DT_DIR)
             ft_ls(files->path, 1);
@@ -82,7 +93,7 @@ void *ft_ls(char *path, int opt)
 int main(int argc, char **argv)
 {
 
-    /*
+    
     t_list *lst = NULL;
     t_list **alst = &lst;
     char *path;
@@ -94,5 +105,5 @@ int main(int argc, char **argv)
 
     return 1;
 
-    */
+    
 }

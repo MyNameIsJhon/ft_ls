@@ -126,7 +126,7 @@ char *ft_strdup(const char *s)// me crée une chaine de caractere alloué (impor
         return NULL;
     ft_memmove((void*) str, (const void*) s, n);
 
-    str[n+1] = '\0';
+    str[n] = '\0';
     
     return str;
 }
