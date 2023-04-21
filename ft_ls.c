@@ -78,9 +78,13 @@ void *ft_ls(char *path, int opt)
         i++;
     }
     
-    
-
     while(file != NULL)
+    {
+        ft_printf("%s ", file->str_time);
+        file = file->next;
+    }
+
+    while(file != NULL && opt == 1)
     {
         if(file->d_type == (char) 4 && strcmp(file->d_name, "..") != 0 && strcmp(file->d_name, ".") != 0)
             ft_ls(file->path, 1);

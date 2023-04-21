@@ -1,7 +1,7 @@
 #include <dirent.h>
-
 #include <pwd.h>
 #include <sys/stat.h>
+#include <time.h>
 #include "libft.h"
 #include "list.h"
 #include "ls_list.h"
@@ -21,6 +21,8 @@ ls_files *ls_new(struct stat *file_stat, struct dirent *entry, char *path)
     file->st_uid = file_stat->st_uid;
     file->st_gid = file_stat->st_gid;
     file->st_size = file_stat->st_size;
+    file->st_atim = file_stat->st_atime;
+    file->str_time = ft_strdup(ctime((const __time_t*) &file->st_atim));
 
     userInfos = getpwuid(file->st_uid);
     file->pw_name = ft_strdup(userInfos->pw_name);
@@ -73,6 +75,7 @@ void ls_free(ls_files **pt_files)
     {
         free(file->pw_name);
         free(file->path);
+        free(file->str_time);
         free(file);
         file = file->next;
     }

@@ -1,6 +1,11 @@
 #ifndef LS_LIST 
 #define LS_LIST
 
+#include <dirent.h>
+#include <pwd.h>
+#include <sys/stat.h>
+
+
 typedef struct ls_files{
 
     char d_name[255];//entry
@@ -12,6 +17,9 @@ typedef struct ls_files{
 
     char *pw_name;//pw..
     char *pw_group;
+
+    __time_t st_atim; //nombre de seconde écoulé depuis le 1er janvier 1970
+    char *str_time;
 
     char *path; // path à allouer en cas de -R
 
