@@ -56,6 +56,14 @@ void ls_add_back(ls_files **pt_files, ls_files *file)
     curs->next = file;
 }
 
+void ls_add_front(ls_files **pt_files, ls_files *file)
+{
+    if(!(*pt_files) || !file)
+        return;
+    file->next = *pt_files;
+    pt_files = &file;
+}
+
 void ls_read(ls_files **pt_files, char *opts)
 {
     ls_files *file = *pt_files;

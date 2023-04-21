@@ -80,7 +80,7 @@ void *ft_ls(char *path, int opt)
     
     while(file != NULL)
     {
-        ft_printf("%s ", file->str_time);
+        ft_printf("%d ", file->st_size);
         file = file->next;
     }
 

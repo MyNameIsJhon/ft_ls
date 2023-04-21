@@ -30,6 +30,7 @@ typedef struct ls_files{
 ls_files *ls_new(struct stat *file_stat, struct dirent *entry, char *path);
 ls_files *ls_last(ls_files **pt_files);
 void ls_add_back(ls_files **pt_files, ls_files *file);
+void ls_add_front(ls_files **pt_files, ls_files *file);
 void ls_read(ls_files **pt_files, char *opts);
 void ls_free(ls_files **pt_files);
 
