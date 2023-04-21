@@ -5,6 +5,7 @@
 #include "libft.h"
 #include "list.h"
 #include "ls_list.h"
+#include <string.h>
 
 
 
@@ -82,7 +83,7 @@ void *ft_ls(char *path, int opt)
 
     while(file != NULL)
     {
-        if(file->d_type == (char) 4 && ft_strcmp(file->d_name, "..") == 0)
+        if(file->d_type == (char) 4 && strcmp(file->d_name, "..") != 0 && strcmp(file->d_name, ".") != 0)
             ft_ls(file->path, 1);
         file = file->next;
     }
