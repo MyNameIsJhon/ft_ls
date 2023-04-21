@@ -45,6 +45,22 @@ ls_files *ls_last(ls_files **pt_files)
     return file;
 }
 
+size_t ls_size(ls_files **pt_file)
+{
+    ls_files *file;
+    size_t i = 0;
+
+    file = *pt_file;
+
+    while(file != NULL)
+    {
+        file = file->next;
+        i++;
+    }
+
+    return i ;
+}
+
 void ls_add_back(ls_files **pt_files, ls_files *file)
 {
     ls_files *curs = NULL;
