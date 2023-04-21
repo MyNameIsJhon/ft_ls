@@ -1,22 +1,31 @@
 #include <dirent.h>
+
+#include <pwd.h>
 #include <sys/stat.h>
 #include "libft.h"
 #include "list.h"
 #include "ls_list.h"
 
-ls_files *ls_new(struct stat *file_stat, struct dirent *entry, char *pathfile)
+ls_files *ls_new(struct stat *file_stat, struct dirent *entry, char *path)
 {
     ls_files *file;
+    struct passwd *userInfos;
 
     if(!file_stat || !entry)
         return NULL;
-    if(!(file = ((ls_files*) malloc(sizeof(ls_files)))))
-        return NULL;
+    if(!(file = (ls_files*) malloc(sizeof(ls_files))))
+        return  NULL;
+        
+    ft_strcpy(file->d_name, entry->d_name);
+    file->d_type = entry->d_type;
+    file->st_uid = file_stat->st_uid;
+    file->st_gid = file_stat->st_gid;
+    file->st_size = file_stat->st_size;
 
-    file->entry = entry;
-    file->file_stat = file_stat;
-    file->path = ft_strdup(pathfile);
-    file->next = NULL;
+    userInfos = getpwuid(file->st_uid);
+    file->pw_name = strdup(userInfos->pw_name);
+
+    file->path = ft_strdup(path);
     
     return file;
 }
@@ -27,7 +36,6 @@ ls_files *ls_last(ls_files **pt_files)
 
     while(file->next != NULL)
     {
-        ft_printf("%s \n", (char*) file->entry->d_name);//verification (ne passe pas par ici)
         file = file->next;
     }
     return file;
@@ -50,7 +58,6 @@ void ls_read(ls_files **pt_files, char *opts)
 
     while(file != NULL)
     {
-        ft_printf("%s  ", file->entry->d_name);
         file = file->next;
     }
 }

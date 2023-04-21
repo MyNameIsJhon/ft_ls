@@ -30,11 +30,65 @@
 
 void *ft_ls(char *path, int opt)
 {
-   
+    ls_files *file;
+    ls_files **pt_file = &file;
 
+    DIR *dir;
+    struct dirent *entry;
+    struct stat file_stat;
+
+    char *path_stat;
+
+    int i = 0;
+
+
+    if(!path || !opt)
+        return NULL;
+    if(!(dir = opendir(path)))
+        return NULL;
+    while(entry = readdir(dir))
+    {
+        path_stat = ft_strsjoin(3, path, "/", entry->d_name);
+
+        if(i == 0)
+        {
+            if(lstat(path_stat, &file_stat) == 0)
+            {
+                file = ls_new(&file_stat, entry, path_stat);
+            }
+            else
+                file = ls_new(NULL, entry, path_stat);
+        }
+        else
+        {
+            if(lstat(path_stat, &file_stat) == 0)
+            {
+                ls_add_back(pt_file, ls_new(&file_stat, entry, path_stat));
+                printf("%s \n", entry->d_name);
+            }
+            else
+                ls_add_back(pt_file, ls_new(NULL, entry, path_stat));
+        }
+
+        free(path_stat);
+        i++;
+    }
 }
 
 int main(int argc, char **argv)
 {
+
+    
+    t_list *lst = NULL;
+    t_list **alst = &lst;
+    char *path;
+
+    path = ft_strdup("../ft_ls");
+
+    ft_ls(path, 1);
+
+
+    return 1;
+
     
 }
