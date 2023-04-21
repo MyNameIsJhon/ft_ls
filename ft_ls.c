@@ -74,12 +74,11 @@ void *ft_ls(char *path, int opt)
                 return NULL;
             }
         }
-        printf("%s \n", entry->d_name);
         free(path_stat);
         i++;
     }
     
-    printf("%s ", path);
+    
 
     while(file != NULL)
     {
