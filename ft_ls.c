@@ -48,7 +48,7 @@ void *ft_ls(char *path, int opt)
         return NULL;
     while(entry = readdir(dir))
     {
-        path_stat = ft_strsjoin(3, "papa", "/", entry->d_name);
+        path_stat = ft_strsjoin(3, path, "/", entry->d_name);
 
         if(i == 0)
         {
@@ -75,7 +75,8 @@ void *ft_ls(char *path, int opt)
         i++;
     }
 
-    
+
+    ls_free(pt_file);
 }
 
 int main(int argc, char **argv)
@@ -86,7 +87,7 @@ int main(int argc, char **argv)
     t_list **alst = &lst;
     char *path;
 
-    path = ft_strdup("./");
+    path = ft_strdup(".");
 
     ft_ls(path, 1);
 

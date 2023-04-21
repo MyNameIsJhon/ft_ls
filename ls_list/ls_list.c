@@ -26,6 +26,8 @@ ls_files *ls_new(struct stat *file_stat, struct dirent *entry, char *path)
     file->pw_name = ft_strdup(userInfos->pw_name);
 
     file->path = ft_strdup(path);
+
+    file->next = NULL;
     
     return file;
 }
@@ -65,8 +67,7 @@ void ls_read(ls_files **pt_files, char *opts)
 void ls_free(ls_files **pt_files)
 {
     ls_files *file = NULL;
+    int i = 0;
 
-    while((file = ls_last(pt_files)) != NULL)
-        free(file);
-    free(file);
+    
 }
