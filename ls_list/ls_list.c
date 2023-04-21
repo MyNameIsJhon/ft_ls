@@ -66,8 +66,14 @@ void ls_read(ls_files **pt_files, char *opts)
 
 void ls_free(ls_files **pt_files)
 {
-    ls_files *file = NULL;
+    ls_files *file = *pt_files;
     int i = 0;
 
-    
+    while(file!= NULL)
+    {
+        free(file->pw_name);
+        free(file->path);
+        free(file);
+        file = file->next;
+    }
 }

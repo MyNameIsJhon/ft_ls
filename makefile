@@ -1,5 +1,5 @@
 CC =gcc
-CFLAGS =-I/usr/include -g -DREADLINE_DISABLE
+CFLAGS =-I/usr/include -g 
 LDFLAGS = 
 EXEC =ft_ls
 

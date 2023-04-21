@@ -27,7 +27,6 @@
 \****************************************************************************************/
 
 
-
 void *ft_ls(char *path, int opt)
 {
     ls_files *file;
@@ -57,7 +56,10 @@ void *ft_ls(char *path, int opt)
                 file = ls_new(&file_stat, entry, path_stat);
             }
             else
-                file = ls_new(NULL, entry, path_stat);
+            {
+                ls_free(pt_file);
+                return NULL;
+            }
         }
         else
         {
@@ -66,16 +68,29 @@ void *ft_ls(char *path, int opt)
                 ls_add_back(pt_file, ls_new(&file_stat, entry, path_stat));
             }
             else
-                ls_add_back(pt_file, ls_new(NULL, entry, path_stat));
-
+            {
+                ls_free(pt_file);
+                return NULL;
+            }
         }
-        printf("%s \n", path_stat);
-
+        printf("%s \n", entry->d_name);
         free(path_stat);
         i++;
     }
+    
+    printf("%s ", path);
 
+    while(file != NULL)
+    {
+        if(file->d_type == (char) 4 && ft_strcmp(file->d_name, "..") == 0)
+            ft_ls(file->path, 1);
+        file = file->next;
+    }
+    
+   
 
+    closedir(dir);
+    free(path);
     ls_free(pt_file);
 }
 
@@ -87,7 +102,7 @@ int main(int argc, char **argv)
     t_list **alst = &lst;
     char *path;
 
-    path = ft_strdup(".");
+    path = ft_strdup(".");//important bug ne pas assigner de "/" pour le moment en dernier caractère
 
     ft_ls(path, 1);
 
