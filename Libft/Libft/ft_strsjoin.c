@@ -39,11 +39,6 @@ char *ft_listtostr(t_list **alst, char *str)
 }
 
 
-#include <stdarg.h>
-#include <stddef.h>
-#include "list.h"
-#include "libft.h"
-
 char *ft_strsjoin(int count, ...)
 {
     va_list ap;
