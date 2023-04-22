@@ -13,13 +13,15 @@ SRC = ./Libft/Libft/libft.c \
 		./opt/options.c \
 		./ls_aff/ls_aff.c \
 		./ls_sort_alg/sort_alg.c \
+		./ls_sort_alg/ls_sort_swap.c \
 		./ft_ls.c
 
 HEADS = ./Libft/Libft/libft.h \
 		./Libft/List/list.h \
 		./ls_list/ls_list.h \
 		./ls_aff/ls_aff.h \
-		./ls_sort_alg/sort_alg.c \
+		./ls_sort_alg/sort_alg.h \
+		./ls_sort_alg/ls_sort_swap.h \
 		./opt/options.h
 		
 OBJ = $(SRC:.c=.o)
