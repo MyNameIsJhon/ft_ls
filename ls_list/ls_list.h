@@ -9,6 +9,7 @@
 typedef struct ls_files{
 
     char d_name[255];//entry
+    char *a_name;
     unsigned char d_type;
 
     __uid_t st_uid;//lstat

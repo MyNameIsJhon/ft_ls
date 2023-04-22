@@ -1,5 +1,6 @@
 #include "libft.h"
 #include "ls_list.h"
+#include "sort_alg.h"
 #include <time.h>
 #include <dirent.h>
 #include <sys/stat.h>
@@ -24,7 +25,7 @@ ls_files **ls_mid_colums_order(ls_files **pt_file)
         if(i == 0)
         {
             pt_file = &file->next;
-            ptt_file = file;
+            ptt_file = &file;
             file->next = NULL;
         }
         else
@@ -39,5 +40,10 @@ ls_files **ls_mid_colums_order(ls_files **pt_file)
     }
 
     return ptt_file;
+
+}
+
+void ls_rec_atb(ls_files **pt_file)
+{
 
 }

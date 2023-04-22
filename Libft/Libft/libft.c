@@ -326,24 +326,33 @@ int ft_isascii(const char c)
     return 1; 
 }
 
-int ft_toupper(char c)
+char ft_toupper(char c)
 {
     if(!(ft_isalpha((const char) c)))
         return 0;
     
         c -= 32;
 
-    return 1;
+    return c;
 }
 
-int ft_tolower(char c)
+char ft_tolower(char c)
 {
     if(!(ft_isalpha((const char) c)))
         return 0;
     
         c += 32;
 
-    return 1;
+    return c;
+}
+
+void ft_str_tolower(char *str)
+{
+    while(str++)
+    {
+        if(*str >= 'A' && *str <= 'Z')
+            *str += 32;
+    }
 }
 
 void *ft_memalloc(size_t size)
