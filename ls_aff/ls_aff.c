@@ -19,3 +19,25 @@
 #include "ls_list.h"
 #include "libft.h"
 
+void ls_display(ls_files **pt_file)
+{
+    ls_files *curr_file = *pt_file;
+
+    while(curr_file != NULL)
+    {
+        if(curr_file->a_name[0] != '.')
+            printf("%s   ", curr_file->a_name);
+        curr_file = curr_file->next;
+    }
+}
+
+void ls_display_all(ls_files **pt_file)
+{
+    ls_files *curr_file = *pt_file;
+
+     while(curr_file != NULL) // all 
+    {
+        printf("%s    ", curr_file->a_name);
+        curr_file = curr_file->next;
+    }
+}

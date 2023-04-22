@@ -6,6 +6,7 @@
 #include "list.h"
 #include "ls_list.h"
 #include "sort_alg.h"
+#include "ls_aff.h"
 #include <string.h>
 
 
@@ -83,19 +84,13 @@ void *ft_ls(char *path, int opt)
         i++;
     }
 
-    mergeSort(pt_file);
+    mergeSort(pt_file);//fonction servant à l'organisation
 
     curr_file = file;
+
+    ls_display(pt_file);
     
-    while(curr_file != NULL)
-    {
-        printf("%s    ", curr_file->a_name);
-        curr_file = curr_file->next;
-    }
-
-    curr_file = file;
-
-    while(curr_file != NULL)
+    while(curr_file != NULL && opt == 0)
     {
         if(curr_file->d_type == (char) 4 && strcmp(curr_file->d_name, "..") != 0 && strcmp(curr_file->d_name, ".") != 0)
             ft_ls(curr_file->path, 1);
