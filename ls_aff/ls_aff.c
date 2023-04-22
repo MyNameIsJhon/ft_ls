@@ -26,7 +26,7 @@ void ls_display(ls_files **pt_file)
     while(curr_file != NULL)
     {
         if(curr_file->a_name[0] != '.')
-            printf("%s   ", curr_file->a_name);
+            printf("%o   ", curr_file->st_perm);
         curr_file = curr_file->next;
     }
 }

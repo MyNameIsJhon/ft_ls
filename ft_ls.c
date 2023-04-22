@@ -59,9 +59,7 @@ void *ft_ls(char *path, int opt)
         if(i == 0)
         {
             if(lstat(path_stat, &file_stat) == 0)
-            {
                 file = ls_new(&file_stat, entry, path_stat);
-            }
             else
             {
                 ls_free(pt_file);
@@ -71,9 +69,7 @@ void *ft_ls(char *path, int opt)
         else
         {
             if(lstat(path_stat, &file_stat) == 0)
-            {
                 ls_add_back(pt_file, ls_new(&file_stat, entry, path_stat));
-            }
             else
             {
                 ls_free(pt_file);
@@ -88,11 +84,13 @@ void *ft_ls(char *path, int opt)
 
     curr_file = file;
 
+
+
     ls_display(pt_file);
     
-    while(curr_file != NULL && opt == 0)
+    while(curr_file != NULL && opt == 0)//option recursif
     {
-        if(curr_file->d_type == (char) 4 && strcmp(curr_file->d_name, "..") != 0 && strcmp(curr_file->d_name, ".") != 0)
+        if(curr_file->d_type == (char) 4 && ft_strcmp(curr_file->d_name, "..") != 0 && ft_strcmp(curr_file->d_name, ".") != 0)
             ft_ls(curr_file->path, 1);
         curr_file = curr_file->next;
     }

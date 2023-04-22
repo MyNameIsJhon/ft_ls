@@ -12,9 +12,12 @@ typedef struct ls_files{
     char *a_name;
     unsigned char d_type;
 
+    int st_perm;
+
     __uid_t st_uid;//lstat
     __gid_t st_gid;
     __off_t st_size;
+
 
     char *pw_name;//pw..
     char *pw_group;

@@ -15,6 +15,7 @@ ls_files *ls_new(struct stat *file_stat, struct dirent *entry, char *path)
         return NULL;
     if(!(file = (ls_files*) malloc(sizeof(ls_files))))
         return  NULL;
+
     file->path = NULL;
     ft_strcpy(file->d_name, entry->d_name);
     file->d_type = entry->d_type;
@@ -25,6 +26,7 @@ ls_files *ls_new(struct stat *file_stat, struct dirent *entry, char *path)
     file->str_time = ft_strdup(ctime((const __time_t*) &file->st_atim));
     file->a_name = ft_strdup(file->d_name);
     ft_str_tolower(file->a_name);
+    file->st_perm = file_stat->st_mode & 0777;
 
     userInfos = getpwuid(file->st_uid);
     file->pw_name = ft_strdup(userInfos->pw_name);
