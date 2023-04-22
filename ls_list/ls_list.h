@@ -22,7 +22,7 @@ typedef struct ls_files{
     __time_t st_atim; //nombre de seconde écoulé depuis le 1er janvier 1970
     char *str_time;
 
-    char *path; // path à allouer en cas de -R
+    char *path ;// path à allouer en cas de -R
 
     struct ls_files *next;
     

@@ -348,10 +348,11 @@ char ft_tolower(char c)
 
 void ft_str_tolower(char *str)
 {
-    while(str++)
+    while(*str)
     {
         if(*str >= 'A' && *str <= 'Z')
             *str += 32;
+        *str++;
     }
 }
 

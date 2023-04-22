@@ -3,7 +3,7 @@ CFLAGS =-I/usr/include -g
 LDFLAGS = 
 EXEC =ft_ls
 
-INCLUDES = -I ./Libft/Libft -I ./Libft/List -I /Libft -I ls_struct -I ls_list -I ./opt -I ./ls_aff
+INCLUDES = -I ./Libft/Libft -I ./Libft/List -I /Libft -I ls_struct -I ls_list -I ./opt -I ./ls_aff -I ./ls_sort_alg
 
 SRC = ./Libft/Libft/libft.c \
 		./Libft/Libft/ft_strsjoin.c \

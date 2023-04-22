@@ -1,49 +1,67 @@
 #include "libft.h"
 #include "ls_list.h"
-#include "sort_alg.h"
 #include <time.h>
 #include <dirent.h>
 #include <sys/stat.h>
 #include <pwd.h>
 
-ls_files **ls_mid_colums_order(ls_files **pt_file)
+ls_files* merge(ls_files* left, ls_files* right)
 {
-    size_t lslen;
-    ls_files *file = *pt_file;
-    ls_files **ptt_file;
-    ls_files *t_file;
-
-    int i = 0;
-
-    if(!(*pt_file))
-        return NULL;
-
-    lslen = ls_size(pt_file) / 2;
-
-    while(lslen--)
+    ls_files* result = NULL;
+    
+    if(left == NULL)
+        return right;
+    else if(right == NULL)
+        return left;
+    
+    if(ft_strcmp(left->a_name, right->a_name) <= 0)
     {
-        if(i == 0)
-        {
-            pt_file = &file->next;
-            ptt_file = &file;
-            file->next = NULL;
-        }
-        else
-        {
-            t_file = ls_last(ptt_file);
-            file = *pt_file;
-            pt_file = &file->next;
-            file->next = NULL;
-            t_file->next = file;
-        }
-        i++;
+        result = left;
+        result->next = merge(left->next, right);
     }
-
-    return ptt_file;
-
+    else
+    {
+        result = right;
+        result->next = merge(left, right->next);
+    }
+    return result;
 }
 
-void ls_rec_atb(ls_files **pt_file)
+void split(ls_files* source, ls_files** frontRef, ls_files** backRef)
 {
+    ls_files* fast;
+    ls_files* slow;
+    slow = source;
+    fast = source->next;
+    
+    while(fast != NULL)
+    {
+        fast = fast->next;
+        if(fast != NULL)
+        {
+            slow = slow->next;
+            fast = fast->next;
+        }
+    }
+    
+    *frontRef = source;
+    *backRef = slow->next;
+    slow->next = NULL;
+}
 
+void mergeSort(ls_files** headRef)
+{
+    ls_files* head = *headRef;
+    ls_files* left;
+    ls_files* right;
+    
+    if((head == NULL) || (head->next == NULL))
+        return;
+    
+    split(head, &left, &right);
+    
+    mergeSort(&left);
+    mergeSort(&right);
+    
+    *headRef = merge(left, right);
 }

@@ -5,6 +5,7 @@
 #include "libft.h"
 #include "list.h"
 #include "ls_list.h"
+#include "sort_alg.h"
 #include <string.h>
 
 
@@ -37,9 +38,13 @@ void *ft_ls(char *path, int opt)
     struct dirent *entry;
     struct stat file_stat;
 
+    ls_files *curr_file;
+
     char *path_stat;
 
     int i = 0;
+
+    int y = 0;
 
 
     if(!path || !opt)
@@ -77,24 +82,28 @@ void *ft_ls(char *path, int opt)
         free(path_stat);
         i++;
     }
+
+    mergeSort(pt_file);
+
+    curr_file = file;
     
-    while(file != NULL)
+    while(curr_file != NULL)
     {
-        ft_printf("%d ", file->st_size);
-        file = file->next;
+        printf("%s    ", curr_file->a_name);
+        curr_file = curr_file->next;
     }
 
-    while(file != NULL && opt == 1)
+    curr_file = file;
+
+    while(curr_file != NULL)
     {
-        if(file->d_type == (char) 4 && strcmp(file->d_name, "..") != 0 && strcmp(file->d_name, ".") != 0)
-            ft_ls(file->path, 1);
-        file = file->next;
+        if(curr_file->d_type == (char) 4 && strcmp(curr_file->d_name, "..") != 0 && strcmp(curr_file->d_name, ".") != 0)
+            ft_ls(curr_file->path, 1);
+        curr_file = curr_file->next;
     }
     
    
-
     closedir(dir);
-    free(path);
     ls_free(pt_file);
 }
 
