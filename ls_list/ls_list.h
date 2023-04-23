@@ -13,6 +13,7 @@ typedef struct ls_files{
     unsigned char d_type;
 
     int st_perm;
+    int int_links;
 
     __uid_t st_uid;//lstat
     __gid_t st_gid;

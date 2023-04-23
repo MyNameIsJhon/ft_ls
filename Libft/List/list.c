@@ -124,3 +124,20 @@ void ft_lstiter(t_list *lst, void (*f)(void*))
         curr = curr->next;
     }
 }
+
+char *ft_listtostr(t_list **alst, char *str)
+{
+    t_list *lst;
+
+    if (alst == NULL || *alst == NULL || str == NULL)
+        return NULL;
+
+    lst = *alst;
+    while (lst != NULL)
+    {
+        ft_strcat(str, (char *)(lst->content));
+        lst = lst->next;
+    }
+
+    return str;
+}

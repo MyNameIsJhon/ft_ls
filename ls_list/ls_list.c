@@ -26,7 +26,8 @@ ls_files *ls_new(struct stat *file_stat, struct dirent *entry, char *path)
     file->str_time = ft_strdup(ctime((const __time_t*) &file->st_atim));
     file->a_name = ft_strdup(file->d_name);
     ft_str_tolower(file->a_name);
-    file->st_perm = file_stat->st_mode & 0777;
+    file->st_perm = ft_octal(file_stat->st_mode & 0777);
+    
 
     userInfos = getpwuid(file->st_uid);
     file->pw_name = ft_strdup(userInfos->pw_name);

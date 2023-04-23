@@ -28,7 +28,22 @@
 
 
 \****************************************************************************************/
+int ls_count_int_lks(char *path) //seulement activé pour ls -l
+{
+    DIR *dir;
+    struct dirent *entry;
 
+    size_t i = 0;
+
+    if(!path)
+        return 0;
+    if(!(dir = opendir(path)))
+        return 0;
+    while(entry = readdir(dir))
+        i++;
+    return i; 
+    
+}
 
 void *ft_ls(char *path, int opt)
 {
@@ -47,6 +62,8 @@ void *ft_ls(char *path, int opt)
 
     int y = 0;
 
+    int internal_lks;
+
 
     if(!path || !opt)
         return NULL;
@@ -56,6 +73,13 @@ void *ft_ls(char *path, int opt)
     {
         path_stat = ft_strsjoin(3, path, "/", entry->d_name);
 
+        if(opt == 3)
+        {
+            if(entry->d_type == (int) 4)// nombre internal links
+                internal_lks = ls_count_int_lks(path_stat);
+            else
+                internal_lks = 1;
+        }
         if(i == 0)
         {
             if(lstat(path_stat, &file_stat) == 0)
@@ -76,13 +100,16 @@ void *ft_ls(char *path, int opt)
                 return NULL;
             }
         }
+        
         free(path_stat);
+        internal_lks = 0;
         i++;
     }
 
     mergeSort(pt_file);//fonction servant à l'organisation
 
     curr_file = file;
+
 
 
 

@@ -21,23 +21,6 @@ size_t ft_list_strstrlen(t_list **alst)
     return (count+1);
 }
 
-char *ft_listtostr(t_list **alst, char *str)
-{
-    t_list *lst;
-
-    if (alst == NULL || *alst == NULL || str == NULL)
-        return NULL;
-
-    lst = *alst;
-    while (lst != NULL)
-    {
-        ft_strcat(str, (char *)(lst->content));
-        lst = lst->next;
-    }
-
-    return str;
-}
-
 
 char *ft_strsjoin(int count, ...)
 {
