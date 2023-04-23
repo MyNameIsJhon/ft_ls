@@ -104,7 +104,7 @@ int file_size_digits(ls_files *file) {
 
 
 
-void ls_display_list(ls_files **pt_file)
+void ls_display_list(ls_files **pt_file) // pas encore configuré pour ls -al
 {
     ls_files *file = *pt_file;
     int max_space = max_file_size(*pt_file);

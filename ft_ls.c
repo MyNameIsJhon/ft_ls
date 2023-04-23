@@ -114,14 +114,18 @@ void *ft_ls(char *path, int opt)
 
     curr_file = file;
 
-
+    if(opt == 1)
+        ft_printf("%s\n", path);
 
 
     ls_display_list(pt_file);
+
+    if(opt == 1)
+        ft_putstr("\n\n");
     
-    while(curr_file != NULL && opt == 0)//option recursif
+    while(curr_file != NULL && opt == 1)//option recursif
     {
-        if(curr_file->d_type == (char) 4 && ft_strcmp(curr_file->d_name, "..") != 0 && ft_strcmp(curr_file->d_name, ".") != 0)
+        if(curr_file->d_type == (char) 4 && ft_strcmp(curr_file->d_name, "..") != 0 && ft_strcmp(curr_file->d_name, ".") != 0 && curr_file->d_name[0] != '.')
             ft_ls(curr_file->path, 1);
         curr_file = curr_file->next;
     }
