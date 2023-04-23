@@ -64,14 +64,55 @@ void ls_display_all(ls_files **pt_file)
     }
 }
 
+// Calculer le nombre maximal de caractères nécessaires pour afficher la taille des fichiers
+int max_file_size(ls_files *files) {
+    int max_size = 0;
+    while (files) {
+        int size = 0;
+        long long st_size = files->st_size;
+        while (st_size > 0) {
+            size++;
+            st_size /= 10;
+        }
+        if (size > max_size) {
+            max_size = size;
+        }
+        files = files->next;
+    }
+    return max_size;
+}
+
+// Générer une chaîne d'espaces pour aligner les colonnes
+char *generate_spaces(int count) {
+    char *spaces = malloc(count + 1);
+    for (int i = 0; i < count; i++) {
+        spaces[i] = ' ';
+    }
+    spaces[count] = '\0';
+    return spaces;
+}
+
+int file_size_digits(ls_files *file) {
+    int size = 0;
+    long long st_size = file->st_size;
+    while (st_size > 0) {
+        size++;
+        st_size /= 10;
+    }
+    return size;
+}
+
+
+
 void ls_display_list(ls_files **pt_file)
 {
     ls_files *file = *pt_file;
+    int max_space = max_file_size(*pt_file);
 
     while(file != NULL)
     {
         if(ft_strcmp(file->d_name, "..") != 0 && ft_strcmp(file->d_name, ".") != 0 && file->d_name[0] != '.')
-            ft_printf("%s  %d  %s  %s  %d  %s  %s\n", ls_make_rights(file), file->int_links, file->pw_name, file->pw_name, file->st_size, file->str_time, file->d_name);
+            printf("%s  %d  %s  %s  %s%d  %s  %s\n", ls_make_rights(file), file->int_links, file->pw_name, file->pw_name, generate_spaces(max_space - file_size_digits(file)), file->st_size, file->str_time, file->d_name);
         file = file->next;
     }
 }
