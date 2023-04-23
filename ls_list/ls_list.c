@@ -6,7 +6,24 @@
 #include "list.h"
 #include "ls_list.h"
 
-ls_files *ls_new(struct stat *file_stat, struct dirent *entry, char *path)
+char *ft_strdup_time(const char *s)// me crée une chaine de caractere alloué (important de free !)
+{
+    char *str;
+    int i = 0;
+    size_t n = ft_strlen((char*) s);
+
+    if(!(str = (char*) malloc((sizeof(char) * n) + 1)))
+        return NULL;
+    ft_memmove((void*) str, (const void*) s, n);
+
+    str[n-1] = '\0';
+    
+    return str;
+}
+
+
+
+ls_files *ls_new(struct stat *file_stat, struct dirent *entry, char *path, int internal_lks)
 {
     ls_files *file;
     struct passwd *userInfos;
@@ -23,10 +40,12 @@ ls_files *ls_new(struct stat *file_stat, struct dirent *entry, char *path)
     file->st_gid = file_stat->st_gid;
     file->st_size = file_stat->st_size;
     file->st_atim = file_stat->st_atime;
-    file->str_time = ft_strdup(ctime((const __time_t*) &file->st_atim));
+    file->str_time = ft_strdup_time(ctime((const __time_t*) &file->st_atim));
     file->a_name = ft_strdup(file->d_name);
     ft_str_tolower(file->a_name);
-    file->st_perm = ft_octal(file_stat->st_mode & 0777);
+    file->st_perm = file_stat->st_mode;
+
+    file->int_links = internal_lks;
     
 
     userInfos = getpwuid(file->st_uid);
@@ -98,16 +117,16 @@ void ls_read(ls_files **pt_files, char *opts)
 void ls_free(ls_files **pt_files)
 {
     ls_files *file = *pt_files;
-    int i = 0;
+    ls_files *next_file;
 
-    while(file!= NULL)
-    {
+    while (file) {
+        next_file = file->next;
         free(file->pw_name);
         free(file->path);
         free(file->str_time);
         free(file->a_name);
         free(file);
-        file = file->next;
+        file = next_file;
     }
-    
+    *pt_files = NULL;
 }

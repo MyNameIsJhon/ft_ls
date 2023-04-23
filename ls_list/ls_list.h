@@ -13,7 +13,6 @@ typedef struct ls_files{
     unsigned char d_type;
 
     int st_perm;
-    int int_links;
 
     __uid_t st_uid;//lstat
     __gid_t st_gid;
@@ -27,12 +26,14 @@ typedef struct ls_files{
     char *str_time;
 
     char *path ;// path à allouer en cas de -R
+    int int_links;
+
 
     struct ls_files *next;
     
 } ls_files;
 
-ls_files *ls_new(struct stat *file_stat, struct dirent *entry, char *path);
+ls_files *ls_new(struct stat *file_stat, struct dirent *entry, char *path, int internal_lks);
 ls_files *ls_last(ls_files **pt_files);
 size_t ls_size(ls_files **pt_file);
 void ls_add_back(ls_files **pt_files, ls_files *file);

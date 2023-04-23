@@ -19,60 +19,25 @@
 #include "ls_list.h"
 #include "libft.h"
 
-char  *ls_make_rights(ls_files *file) // crée une chaine alloué servanmt à afficher les droit comme dans ls
-{
-    int nb = file->st_perm;
-    char right[10] = "----------";
-
-    char *right_return;
-
-    int right_nb[3];
-
-    int i = 0;
-    int y = 1;
-
-    if(!file)
+char *ls_make_rights(ls_files *file) {
+    char *rights = malloc(sizeof(char) * 11);
+    if (!rights)
         return NULL;
 
-    if(nb == 0)
-        return ft_strdup("----------");
+    int nb = file->st_perm;
+    rights[0] = S_ISDIR(file->st_perm) ? 'd' : '-';
+    rights[1] = (nb & S_IRUSR) ? 'r' : '-';
+    rights[2] = (nb & S_IWUSR) ? 'w' : '-';
+    rights[3] = (nb & S_IXUSR) ? 'x' : '-';
+    rights[4] = (nb & S_IRGRP) ? 'r' : '-';
+    rights[5] = (nb & S_IWGRP) ? 'w' : '-';
+    rights[6] = (nb & S_IXGRP) ? 'x' : '-';
+    rights[7] = (nb & S_IROTH) ? 'r' : '-';
+    rights[8] = (nb & S_IWOTH) ? 'w' : '-';
+    rights[9] = (nb & S_IXOTH) ? 'x' : '-';
+    rights[10] = '\0';
 
-    right_nb[0] = nb / 100; //root
-    right_nb[1] = (nb - right_nb[0]) / 10;//admin
-    right_nb[2] = nb - right_nb[0] - right_nb[1]; //user
-
-    while(right[i] != '\0')
-    {
-        if(file->d_type == (char) 4)
-            right[0] = 'd';
-        while(i < 3)
-        {
-            if(right_nb[i] - 4 >= 0)
-            {
-                right[y] = 'r';
-                right_nb[i] -= 4;
-            }
-            y++;
-            if(right_nb[i] - 2 >= 0)
-            {
-                right[y] = 'w';
-                right_nb[i] -= 2;
-            }
-            y++;
-            if(right_nb[i] - 1 >= 0)
-            {
-                right[y] = 'x';
-                right_nb[i] -= 1;
-            }
-            y++;
-
-            i++;
-        }
-    }
-
-    right_return = ft_strdup(right);
-
-    return right_return;
+    return rights;
 }
 
 
@@ -83,7 +48,7 @@ void ls_display(ls_files **pt_file)
     while(curr_file != NULL)
     {
         if(curr_file->a_name[0] != '.')
-            printf("%s   ", curr_file->str_time);
+            printf("%d   ", curr_file->int_links);
         curr_file = curr_file->next;
     }
 }
@@ -96,5 +61,17 @@ void ls_display_all(ls_files **pt_file)
     {
         printf("%s    ", curr_file->a_name);
         curr_file = curr_file->next;
+    }
+}
+
+void ls_display_list(ls_files **pt_file)
+{
+    ls_files *file = *pt_file;
+
+    while(file != NULL)
+    {
+        if(ft_strcmp(file->d_name, "..") != 0 && ft_strcmp(file->d_name, ".") != 0 && file->d_name[0] != '.')
+            ft_printf("%s  %d  %s  %s  %d  %s  %s\n", ls_make_rights(file), file->int_links, file->pw_name, file->pw_name, file->st_size, file->str_time, file->d_name);
+        file = file->next;
     }
 }

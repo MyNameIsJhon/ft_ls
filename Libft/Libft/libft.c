@@ -122,7 +122,7 @@ char *ft_strdup(const char *s)// me crée une chaine de caractere alloué (impor
     int i = 0;
     size_t n = ft_strlen((char*) s);
 
-    if(!(str = (char*) malloc((sizeof(char) * n)+ 1)))
+    if(!(str = (char*) malloc((sizeof(char) * n) + 1)))
         return NULL;
     ft_memmove((void*) str, (const void*) s, n);
 

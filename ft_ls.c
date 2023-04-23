@@ -28,6 +28,7 @@
 
 
 \****************************************************************************************/
+
 int ls_count_int_lks(char *path) //seulement activé pour ls -l
 {
     DIR *dir;
@@ -40,7 +41,10 @@ int ls_count_int_lks(char *path) //seulement activé pour ls -l
     if(!(dir = opendir(path)))
         return 0;
     while(entry = readdir(dir))
-        i++;
+    {
+        if(ft_strcmp(entry->d_name, "..") != 0 && ft_strcmp(entry->d_name, ".") != 0)
+            i++;
+    }
     return i; 
     
 }
@@ -73,7 +77,7 @@ void *ft_ls(char *path, int opt)
     {
         path_stat = ft_strsjoin(3, path, "/", entry->d_name);
 
-        if(opt == 3)
+        if(opt == 1)
         {
             if(entry->d_type == (int) 4)// nombre internal links
                 internal_lks = ls_count_int_lks(path_stat);
@@ -83,7 +87,7 @@ void *ft_ls(char *path, int opt)
         if(i == 0)
         {
             if(lstat(path_stat, &file_stat) == 0)
-                file = ls_new(&file_stat, entry, path_stat);
+                file = ls_new(&file_stat, entry, path_stat, internal_lks);
             else
             {
                 ls_free(pt_file);
@@ -93,7 +97,7 @@ void *ft_ls(char *path, int opt)
         else
         {
             if(lstat(path_stat, &file_stat) == 0)
-                ls_add_back(pt_file, ls_new(&file_stat, entry, path_stat));
+                ls_add_back(pt_file, ls_new(&file_stat, entry, path_stat, internal_lks));
             else
             {
                 ls_free(pt_file);
@@ -113,7 +117,7 @@ void *ft_ls(char *path, int opt)
 
 
 
-    ls_display(pt_file);
+    ls_display_list(pt_file);
     
     while(curr_file != NULL && opt == 0)//option recursif
     {
