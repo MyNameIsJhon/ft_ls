@@ -18,6 +18,7 @@
 
 #include "ls_list.h"
 #include "libft.h"
+#include "options.h"
 
 char *ls_make_rights(ls_files *file) {
     char *rights = malloc(sizeof(char) * 11);
@@ -48,7 +49,7 @@ void ls_display(ls_files **pt_file)
     while(curr_file != NULL)
     {
         if(curr_file->a_name[0] != '.')
-            printf("%d   ", curr_file->int_links);
+            printf("%d   ", curr_file->d_name);
         curr_file = curr_file->next;
     }
 }
@@ -59,7 +60,7 @@ void ls_display_all(ls_files **pt_file)
 
      while(curr_file != NULL) // all 
     {
-        printf("%s    ", curr_file->a_name);
+        printf("%s    ", curr_file->d_name);
         curr_file = curr_file->next;
     }
 }
@@ -104,15 +105,48 @@ int file_size_digits(ls_files *file) {
 
 
 
-void ls_display_list(ls_files **pt_file) // pas encore configuré pour ls -al
+void ls_display_list(ls_files **pt_file, ls_flags *flags) // pas encore configuré pour ls -al
 {
     ls_files *file = *pt_file;
     int max_space = max_file_size(*pt_file);
 
-    while(file != NULL)
+    if(flags->a == 0)
     {
-        if(ft_strcmp(file->d_name, "..") != 0 && ft_strcmp(file->d_name, ".") != 0 && file->d_name[0] != '.')
-            printf("%s  %d  %s  %s  %s%d  %s  %s\n", ls_make_rights(file), file->int_links, file->pw_name, file->pw_name, generate_spaces(max_space - file_size_digits(file)), file->st_size, file->str_time, file->d_name);
-        file = file->next;
+        while(file != NULL)
+        {
+            if(ft_strcmp(file->d_name, "..") != 0 && ft_strcmp(file->d_name, ".") != 0 && file->d_name[0] != '.' )
+                printf("%s  %d  %s  %s  %s%d  %s  %s\n", ls_make_rights(file), file->int_links, file->pw_name, file->pw_name, generate_spaces(max_space - file_size_digits(file)), file->st_size, file->str_time, file->d_name);
+            file = file->next;
+        }
     }
+    else if(flags->a != 0)
+    {
+        while(file != NULL)
+        {
+            if(ft_strcmp(file->d_name, "..") != 0)
+                printf("%s  %d  %s  %s  %s%d  %s  %s\n", ls_make_rights(file), file->int_links, file->pw_name, file->pw_name, generate_spaces(max_space - file_size_digits(file)), file->st_size, file->str_time, file->d_name);
+            file = file->next;
+        }
+    }
+
+}
+
+void ls_user_display(ls_flags *flags, ls_files **pt_files)
+{
+    if(flags->R == 1)
+    {
+        if(flags->l == 1)
+            ls_display_list(pt_files, flags);
+        else if(flags->a == 1)
+            ls_display_all(pt_files);
+        else
+            ls_display(pt_files);
+    }
+    else if(flags->l == 1)
+        ls_display_list(pt_files, flags);
+
+    else if(flags->a == 1)
+        ls_display_all(pt_files);
+    else 
+        ls_display(pt_files);
 }

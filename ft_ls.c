@@ -50,7 +50,7 @@ int ls_count_int_lks(char *path) //seulement activé pour ls -l
     
 }
 
-void *ft_ls(char *path, int opt)
+void *ft_ls(char *path, ls_flags *flags)
 {
     ls_files *file;
     ls_files **pt_file = &file;
@@ -69,16 +69,17 @@ void *ft_ls(char *path, int opt)
 
     int internal_lks;
 
+    ft_putstr(path);//test positif
 
-    if(!path || !opt)
+    if(!path || !flags)
         return NULL;
     if(!(dir = opendir(path)))
         return NULL;
     while(entry = readdir(dir))
     {
         path_stat = ft_strsjoin(3, path, "/", entry->d_name);
-
-        if(opt == 1)
+        ft_putnbr(1); //test echoué
+        if(flags->l == 1)
         {
             if(entry->d_type == (int) 4)// nombre internal links
                 internal_lks = ls_count_int_lks(path_stat);
@@ -113,43 +114,33 @@ void *ft_ls(char *path, int opt)
 
     mergeSort(pt_file);//fonction servant à l'organisation
 
+
     curr_file = file;
 
-    if(opt == 1)
-        ft_printf("%s\n", path);
-
-
-    ls_display_list(pt_file);
-
-    if(opt == 1)
-        ft_putstr("\n\n");
+    ls_user_display(flags, pt_file);
+    ls_display(pt_file);
     
-    while(curr_file != NULL && opt == 1)//option recursif
+    while(curr_file != NULL && flags->R == 1)//option recursif
     {
         if(curr_file->d_type == (char) 4 && ft_strcmp(curr_file->d_name, "..") != 0 && ft_strcmp(curr_file->d_name, ".") != 0 && curr_file->d_name[0] != '.')
-            ft_ls(curr_file->path, 1);
+            ft_ls(curr_file->path, flags);
         curr_file = curr_file->next;
     }
     
-   
     closedir(dir);
     ls_free(pt_file);
 }
 
 int main(int argc, char **argv)
 {
-
-    
     t_list *lst = NULL;
     t_list **alst = &lst;
-    char *path;
+    ls_flags *flags;
 
-    path = ft_strdup(".");//important bug ne pas assigner de "/" pour le moment en dernier caractère
+    flags = ls_rec_flags_all(argc, argv);
 
-    ft_ls(path, 1);
+    ft_ls(flags->path, flags);
 
 
-    return 1;
-
-    
+    return 1; 
 }

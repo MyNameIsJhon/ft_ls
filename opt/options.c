@@ -41,12 +41,8 @@ void ret_ls_flags(char c, ls_flags *flags)
         flags->t = 1;
 }
 
-ls_flags *ls_flags_set(char *str)
+void ls_flags_set(char *str, ls_flags *flags)
 {
-    ls_flags *flags = NULL; //ne pas oublier de free()
-
-    flags = ls_flags_init();
-    
     int i = 1;
 
     if(str[0] == '-')
@@ -61,8 +57,25 @@ ls_flags *ls_flags_set(char *str)
         flags->path = ft_strdup(str);
 }
 
-ls_flags *ls_rec_fall(int argc, char **argv)
+ls_flags *ls_rec_flags_all(int argc, char **argv)
 {
+    ls_flags *flags = NULL;
+    int i = 0;
 
+    flags = ls_flags_init();
+
+    while(i < argc)
+    {
+        ls_flags_set(argv[i], flags);
+        i++;
+    }
+
+    return flags;
+}
+
+void free_flags(ls_flags *flags)
+{
+    free(flags->path);
+    free(flags);
 }
 
