@@ -1,6 +1,17 @@
 #ifndef OPTIONS_C
 #define OPTIONS_C
 
-char *recup_opt(int argc, char **argv);
+
+typedef struct ls_flags{
+
+    int l;
+    int R;
+    int a;
+    int r;
+    int t;
+
+    char *path;
+
+} ls_flags;
 
 #endif

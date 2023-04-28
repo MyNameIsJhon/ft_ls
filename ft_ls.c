@@ -7,6 +7,7 @@
 #include "ls_list.h"
 #include "sort_alg.h"
 #include "ls_aff.h"
+#include "options.h"
 #include <string.h>
 
 
