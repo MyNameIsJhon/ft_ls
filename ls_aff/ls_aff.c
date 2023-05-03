@@ -21,6 +21,37 @@
 #include "options.h"
 #include <stdio.h>
 
+
+size_t strlen_ls_name(ls_files **pt_file)
+{
+    ls_files *file;
+
+    file = *pt_file;
+
+    size_t len = 0;
+    size_t len_curr;
+
+    while(file != NULL)
+    {
+        len_curr = ft_strlen(file->d_name);
+        if(len < len_curr)
+            len = len_curr;
+        file = file->next;
+    }
+
+    return len;
+}
+
+// Générer une chaîne d'espaces pour aligner les colonnes
+char *generate_spaces(int count) {
+    char *spaces = malloc(count + 1);
+    for (int i = 0; i < count; i++) {
+        spaces[i] = ' ';
+    }
+    spaces[count] = '\0';
+    return spaces;
+}
+
 char *ls_make_rights(ls_files *file) {
     char *rights = malloc(sizeof(char) * 11);
     if (!rights)
@@ -46,13 +77,35 @@ char *ls_make_rights(ls_files *file) {
 void ls_display(ls_files **pt_file)
 {
     ls_files *curr_file = *pt_file;
+    int i = 1;
+    char *str_space = NULL;
+
+    int len_max = strlen_ls_name(pt_file);
 
     
     while(curr_file != NULL)
     {
+        
         if(curr_file->a_name[0] != '.')
-            printf("%s   ", curr_file->d_name);
+        {
+            ft_putstr(curr_file->d_name);
+            if(curr_file->int_links < 6)
+            {
+                str_space = generate_spaces(len_max - ft_strlen(curr_file->d_name) + 4);
+                ft_putstr(str_space);
+                free(str_space);
+                if((i % 6) == 0)
+                    ft_putchar('\n');
+                i++;
+            }
+            else
+            {
+                ft_putstr("    ");
+            }            
+            
+        }
         curr_file = curr_file->next;
+
     }
 }
 
@@ -62,7 +115,7 @@ void ls_display_all(ls_files **pt_file)
 
     while(curr_file != NULL) // all 
     {
-        printf("%s    ", curr_file->d_name);
+        printf("%s \t", curr_file->d_name);
         curr_file = curr_file->next;
     }
 }
@@ -85,15 +138,6 @@ int max_file_size(ls_files *files) {
     return max_size;
 }
 
-// Générer une chaîne d'espaces pour aligner les colonnes
-char *generate_spaces(int count) {
-    char *spaces = malloc(count + 1);
-    for (int i = 0; i < count; i++) {
-        spaces[i] = ' ';
-    }
-    spaces[count] = '\0';
-    return spaces;
-}
 
 int file_size_digits(ls_files *file) {
     int size = 0;
@@ -112,20 +156,30 @@ void ls_display_list(ls_files **pt_file, ls_flags *flags) // pas encore configur
     ls_files *file = *pt_file;
     int max_space = max_file_size(*pt_file);
 
+    char *len_spaces;
+
     if(flags->a == 0)
     {
         while(file != NULL)
         {
             if(ft_strcmp(file->d_name, "..") != 0 && ft_strcmp(file->d_name, ".") != 0 && file->d_name[0] != '.' )
-                printf("%s  %d  %s  %s  %s%d  %s  %s\n", ls_make_rights(file), file->int_links, file->pw_name, file->pw_name, generate_spaces(max_space - file_size_digits(file)), file->st_size, file->str_time, file->d_name);
+            {
+                len_spaces = generate_spaces(max_space - file_size_digits(file));
+                printf("%s  %d  %s  %s  %s%d  %s  %s\n", ls_make_rights(file), file->int_links, file->pw_name, file->pw_name, len_spaces, file->st_size, file->str_time, file->d_name);
+                free(len_spaces);
+
+            }
             file = file->next;
+            
         }
     }
     else if(flags->a != 0)
     {
         while(file != NULL)
         {
-            printf("%s  %d  %s  %s  %s%d  %s  %s\n", ls_make_rights(file), file->int_links, file->pw_name, file->pw_name, generate_spaces(max_space - file_size_digits(file)), file->st_size, file->str_time, file->d_name);
+            len_spaces = generate_spaces(max_space - file_size_digits(file));
+            printf("%s  %d  %s  %s  %s%d  %s  %s\n", ls_make_rights(file), file->int_links, file->pw_name, file->pw_name, len_spaces, file->st_size, file->str_time, file->d_name);
+            free(len_spaces);
             file = file->next;
         }
     }
@@ -141,16 +195,12 @@ void ls_display_for_all(ls_files **pt_file, ls_flags *flags)
         else if(flags->a)
             ls_display_all(pt_file);
         else
-        {
             ls_display(pt_file);
-        }
     }
     else if(flags->l)
         ls_display_list(pt_file, flags);
     else if(flags->a)
-    {
         ls_display_all(pt_file);
-    }
     else
         ls_display(pt_file);
 }
