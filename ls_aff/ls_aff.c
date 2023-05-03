@@ -19,6 +19,7 @@
 #include "ls_list.h"
 #include "libft.h"
 #include "options.h"
+#include <stdio.h>
 
 char *ls_make_rights(ls_files *file) {
     char *rights = malloc(sizeof(char) * 11);
@@ -46,10 +47,11 @@ void ls_display(ls_files **pt_file)
 {
     ls_files *curr_file = *pt_file;
 
+    
     while(curr_file != NULL)
     {
         if(curr_file->a_name[0] != '.')
-            printf("%d   ", curr_file->d_name);
+            printf("%s   ", curr_file->d_name);
         curr_file = curr_file->next;
     }
 }
@@ -58,7 +60,7 @@ void ls_display_all(ls_files **pt_file)
 {
     ls_files *curr_file = *pt_file;
 
-     while(curr_file != NULL) // all 
+    while(curr_file != NULL) // all 
     {
         printf("%s    ", curr_file->d_name);
         curr_file = curr_file->next;
@@ -123,30 +125,33 @@ void ls_display_list(ls_files **pt_file, ls_flags *flags) // pas encore configur
     {
         while(file != NULL)
         {
-            if(ft_strcmp(file->d_name, "..") != 0)
-                printf("%s  %d  %s  %s  %s%d  %s  %s\n", ls_make_rights(file), file->int_links, file->pw_name, file->pw_name, generate_spaces(max_space - file_size_digits(file)), file->st_size, file->str_time, file->d_name);
+            printf("%s  %d  %s  %s  %s%d  %s  %s\n", ls_make_rights(file), file->int_links, file->pw_name, file->pw_name, generate_spaces(max_space - file_size_digits(file)), file->st_size, file->str_time, file->d_name);
             file = file->next;
         }
     }
 
 }
 
-void ls_user_display(ls_flags *flags, ls_files **pt_files)
+void ls_display_for_all(ls_files **pt_file, ls_flags *flags)
 {
     if(flags->R == 1)
     {
-        if(flags->l == 1)
-            ls_display_list(pt_files, flags);
-        else if(flags->a == 1)
-            ls_display_all(pt_files);
+        if(flags->l)
+            ls_display_list(pt_file, flags);
+        else if(flags->a)
+            ls_display_all(pt_file);
         else
-            ls_display(pt_files);
+        {
+            ls_display(pt_file);
+        }
     }
-    else if(flags->l == 1)
-        ls_display_list(pt_files, flags);
-
-    else if(flags->a == 1)
-        ls_display_all(pt_files);
-    else 
-        ls_display(pt_files);
+    else if(flags->l)
+        ls_display_list(pt_file, flags);
+    else if(flags->a)
+    {
+        ls_display_all(pt_file);
+    }
+    else
+        ls_display(pt_file);
 }
+

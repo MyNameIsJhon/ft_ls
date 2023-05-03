@@ -30,6 +30,7 @@
 
 \****************************************************************************************/
 
+
 int ls_count_int_lks(char *path) //seulement activé pour ls -l
 {
     DIR *dir;
@@ -69,16 +70,19 @@ void *ft_ls(char *path, ls_flags *flags)
 
     int internal_lks;
 
-    ft_putstr(path);//test positif
+    int path_counter = ft_strlen(path);
 
     if(!path || !flags)
         return NULL;
-    if(!(dir = opendir(path)))
+    if(!(dir = opendir(path))) // le problème est ici
         return NULL;
     while(entry = readdir(dir))
     {
-        path_stat = ft_strsjoin(3, path, "/", entry->d_name);
-        ft_putnbr(1); //test echoué
+        if(path[path_counter-1] != '/')
+            path_stat = ft_strsjoin(3, path, "/", entry->d_name);
+        else
+            path_stat = ft_strjoin(path, entry->d_name);
+
         if(flags->l == 1)
         {
             if(entry->d_type == (int) 4)// nombre internal links
@@ -106,6 +110,8 @@ void *ft_ls(char *path, ls_flags *flags)
                 return NULL;
             }
         }
+
+
         
         free(path_stat);
         internal_lks = 0;
@@ -116,9 +122,14 @@ void *ft_ls(char *path, ls_flags *flags)
 
 
     curr_file = file;
+    
+    if(flags->R)
+        ft_printf("%s \n", path);
 
-    ls_user_display(flags, pt_file);
-    ls_display(pt_file);
+    ls_display_for_all(pt_file, flags);
+
+    if(flags->R)
+        ft_putstr("\n\n");
     
     while(curr_file != NULL && flags->R == 1)//option recursif
     {
@@ -137,10 +148,10 @@ int main(int argc, char **argv)
     t_list **alst = &lst;
     ls_flags *flags;
 
-    flags = ls_rec_flags_all(argc, argv);
+    flags = ls_flags_set(argc, argv);
 
     ft_ls(flags->path, flags);
-
+    
 
     return 1; 
 }
