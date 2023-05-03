@@ -150,8 +150,8 @@ int main(int argc, char **argv)
 
     flags = ls_flags_set(argc, argv);
 
-    ft_ls(flags->path, flags);
-    
+    if(!(ft_ls(flags->path, flags)))
+        ft_putstr("the value you introduce is not correct ! \n\n");
 
     return 1; 
 }
