@@ -113,9 +113,27 @@ void ls_display_all(ls_files **pt_file)
 {
     ls_files *curr_file = *pt_file;
 
+    int i = 1;
+    char *str_space = NULL;
+
+    int len_max = strlen_ls_name(pt_file);
+
     while(curr_file != NULL) // all 
     {
-        printf("%s \t", curr_file->d_name);
+        ft_putstr(curr_file->d_name);
+        if(curr_file->int_links < 6)
+        {
+            str_space = generate_spaces(len_max - ft_strlen(curr_file->d_name) + 4);
+            ft_putstr(str_space);
+            free(str_space);
+            if((i % 6) == 0)
+                ft_putchar('\n');
+            i++;
+        }
+        else
+        {
+            ft_putstr("    ");
+        }   
         curr_file = curr_file->next;
     }
 }
