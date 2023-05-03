@@ -57,5 +57,8 @@ ls_flags *ls_flags_set(int argc, char **argv)
         i++;
     }
 
+    if(flags->path == NULL)
+        flags->path = ft_strdup("./");
+
     return flags;
 }
